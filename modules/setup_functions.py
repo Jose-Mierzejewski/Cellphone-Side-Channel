@@ -21,7 +21,7 @@ def moving_average(data, window_size):
     return cumsum[window_size - 1:] / window_size
 
 
-def butter_highpass(cutoff, fs, order=5):
+def _butter_highpass(cutoff, fs, order=5):
     """Author: Forrest Dudley"""
 
     nyq = 0.5 * fs
@@ -32,7 +32,7 @@ def butter_highpass(cutoff, fs, order=5):
 def butter_highpass_filter(data, cutoff, fs, order=5):
     """Author: Forrest Dudley"""
 
-    b, a = butter_highpass(cutoff, fs, order=order)
+    b, a = _butter_highpass(cutoff, fs, order=order)
     y = signal.filtfilt(b, a, data)
     return y
 
