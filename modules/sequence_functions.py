@@ -4,6 +4,38 @@ import csv
 import os
 import pylab
 
+def moving_average(data, window_size):
+    """
+    Author: Forrest Dudley
+    Compute the moving average of a 1D array.
+
+    Parameters:
+        data (ndarray): Input array.
+        window_size (int): Size of the moving window.
+
+    Returns:
+        ndarray: Moving average of the input array.
+    """
+    cumsum = np.cumsum(data, dtype=float)
+    cumsum[window_size:] = cumsum[window_size:] - cumsum[:-window_size]
+    return cumsum[window_size - 1:] / window_size
+
+
+def _butter_highpass(cutoff, fs, order=5):
+    """Author: Forrest Dudley"""
+
+    nyq = 0.5 * fs
+    normal_cutoff = cutoff / nyq
+    b, a = signal.butter(order, normal_cutoff, btype='highpass', analog=False)
+    return b, a
+
+def butter_highpass_filter(data, cutoff, fs, order=5):
+    """Author: Forrest Dudley"""
+
+    b, a = _butter_highpass(cutoff, fs, order=order)
+    y = signal.filtfilt(b, a, data)
+    return y
+
 def read_csv(file_path, csv_has_metadata=True):
     """reads through an individual csv file and returns a list of the voltages
     Author: Forrest Dudley
