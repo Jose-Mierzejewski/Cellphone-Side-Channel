@@ -33,7 +33,7 @@ def _load_data_from_folder(path):
 
     return data
 
-def generate_data_from_parent_folder(path_to_parent_folder, buttons_pressed:'list'):
+def generate_data_from_parent_folder(path_to_parent_folder):
     """
     Returns a numpy array of requested data, as well as an array of labels for each data point.
     :param buttons_pressed: the buttons that were pressed, corresponding to the folders that will be read.
@@ -42,8 +42,13 @@ def generate_data_from_parent_folder(path_to_parent_folder, buttons_pressed:'lis
     X = []
     y = []
 
-    for button_pressed in buttons_pressed:
-        data = _load_data_from_folder(path_to_parent_folder + '/' + str(button_pressed))
+    for filename in os.listdir(path_to_parent_folder):
+      full_path = os.path.join(path_to_parent_folder, filename)
+
+      if os.path.isdir(full_path):
+        button_pressed = filename
+      
+        data = _load_data_from_folder(full_path)
         X = X + data
         y = y + [button_pressed] * len(data)
 
