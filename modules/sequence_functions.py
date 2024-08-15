@@ -127,3 +127,11 @@ def thresholding_algo(y, lag, threshold, influence):
     return dict(signals = np.asarray(signals),
                 avgFilter = np.asarray(avgFilter),
                 stdFilter = np.asarray(stdFilter))
+
+def get_switch_index(series, start_index=0):
+  item = series[start_index]
+  index = start_index
+  while True:
+    if len(series)-1 == index or series[index] != item:
+      return index
+    index += 1
