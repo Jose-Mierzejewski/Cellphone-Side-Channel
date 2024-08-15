@@ -2,7 +2,7 @@ import numpy as np
 from scipy import signal
 import csv
 import os
-
+import pylab
 
 def read_csv(file_path, csv_has_metadata=True):
     """reads through an individual csv file and returns a list of the voltages
