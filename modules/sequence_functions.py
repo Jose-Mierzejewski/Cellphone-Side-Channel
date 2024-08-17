@@ -135,38 +135,3 @@ def get_switch_index(series, start_index=0):
     if len(series)-1 == index or series[index] != item:
       return index
     index += 1
-
-def run_peakfinding_on_dataset(X_downsampled, lag, threshold, influence, window_size, min_length_for_button):
-  peak_indeces_filtered_data = []
-
-  for reading in X_downsampled:
-    reading_peak_indeces = []
-
-    reading_averaged = moving_average(reading, window_size)
-    thresholding_result = thresholding_algo(reading_averaged, lag=lag, threshold=threshold, influence=influence)['signals']
-    
-    # Get index of first 0
-    start_index = np.where(thresholding_result == 0)[0][0]
-    end_index = start_index
-
-    while True:
-      # find start of next 1
-      start_index = get_switch_index(thresholding_result, end_index)
-
-      # find end of trace (next 0)
-      end_index = get_switch_index(thresholding_result, start_index)
-
-      if start_index == end_index:
-        break
-
-      reading_peak_indeces.append((start_index, end_index))
-
-
-    temp_indeces = []
-    for peak in reading_peak_indeces:
-      if peak[1] - peak[0] >= min_length_for_button:
-        temp_indeces.append(peak[0])
-    
-    peak_indeces_filtered_data.append(temp_indeces)
-    
-    return peak_indeces_filtered_data
